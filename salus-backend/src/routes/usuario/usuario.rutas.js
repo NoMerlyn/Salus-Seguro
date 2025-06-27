@@ -66,14 +66,39 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ✅ Editar usuario existente
-router.put('/:id', (req, res) => {
-  const { nombre, apellido, correo, username, tipo, cedula, telefono } = req.body;
-  const sql = 'UPDATE usuario SET nombre=?, apellido=?, correo=?, username=?, tipo=?, cedula=?, telefono=? WHERE id_usuario=?';
-  const values = [nombre, apellido, correo, username, tipo, cedula, telefono, req.params.id];
+// ✅ Editar usuario existente// Función para filtrar campos válidos y no nulos/indefinidos
+function filtrarCampos(body, camposPermitidos) {
+  const campos = [];
+  const valores = [];
 
-  db.query(sql, values, (err) => {
-    if (err) return res.status(500).json({ error: 'Error al actualizar usuario' });
+  camposPermitidos.forEach((campo) => {
+    const valor = body[campo];
+    if (valor !== undefined && valor !== null) {
+      campos.push(`${campo} = ?`);
+      valores.push(valor);
+    }
+  });
+
+  return { campos, valores };
+}
+
+router.put('/:id', (req, res) => {
+  const camposPermitidos = ['nombre', 'apellido', 'correo', 'username', 'tipo', 'cedula', 'telefono'];
+
+  const { campos, valores } = filtrarCampos(req.body, camposPermitidos);
+
+  if (campos.length === 0) {
+    return res.status(400).json({ error: 'No se proporcionaron campos válidos para actualizar' });
+  }
+
+  const sql = `UPDATE usuario SET ${campos.join(', ')} WHERE id_usuario = ?`;
+  valores.push(req.params.id);
+
+  db.query(sql, valores, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error al actualizar usuario' });
+    }
     res.sendStatus(200);
   });
 });

@@ -70,7 +70,7 @@ router.post("/enviar-pdf", upload.single("file"), async (req, res) => {
             service: "gmail",
             auth: {
                 user: "gestioinplus@gmail.com",
-                pass: "yglb ikhe xrhk vvmp",
+                pass: "uzzg howf yjgf epne",
             },
         });
 

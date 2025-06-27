@@ -55,7 +55,7 @@ const CrearUsuario = () => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_URL_API_BACK_END}usuario`, formData);
+      await axios.post(`${import.meta.env.VITE_URL_API_BACK_END}usuario/${id}/activar`, formData);
       toast({
         title: "Usuario creado",
         description: "El usuario ha sido creado exitosamente",
