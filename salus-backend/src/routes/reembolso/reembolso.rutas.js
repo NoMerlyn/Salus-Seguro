@@ -53,7 +53,7 @@ router.get("/:id_usuario", (req, res) => {
       }
       if (row.nombre_archivo) {
         agrupados[row.id_reembolso].archivos.push(
-          `${import.meta.env.VITE_URL_API_BACK_END}reembolsos`
+          `${import.meta.env.VITE_URL_API_BACK_END}`
         );
       }
     });

@@ -109,7 +109,7 @@ const FormularioReembolso = () => {
     formData.append("seguroSeleccionado", values.seguroSeleccionado || "");
 
     try {
-      const res = await fetch(`http://localhost:8000/reembolsos/${idSeguro}`, {
+      const res = await fetch(`${import.meta.env.VITE_URL_API_BACK_END}${idSeguro}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
